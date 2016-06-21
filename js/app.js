@@ -41,22 +41,34 @@ var places = [
 **/
 
 // Initialize Google Map
-var map;
+var map,
+	infowindow;
+
 var initMap = function() {
+
     map = new google.maps.Map(document.getElementById('map'), {
       center: {lat: 41.7484685, lng: -72.7022609},
       zoom: 14
     });
 
-    places.forEach(function(markerInfo){
-    	new google.maps.Marker({
+   	infowindow = new google.maps.InfoWindow({
+			content: 'TESTING',
+			infoposition: {lat: 41.7484685, lng: -72.7022609}
+	});
+
+    places.forEach(function(data, i){
+    	var marker = new google.maps.Marker({
 		    map: map,
 		    animation: google.maps.Animation.DROP,
-		    position: {lat: markerInfo.latitude, lng: markerInfo.longitude}
+		    position: {lat: data.latitude, lng: data.longitude}
  		}).addListener('click', function(){
- 			console.log(markerInfo.name)
+ 			infowindow.open(map);
+ 			infowindow.setPosition( {lat: data.latitude, lng: data.longitude} );
+ 			console.log(infowindow.infowindowposition);
  		});
     });
+
+    console.log(infowindow.position);
 
     google.maps.event.addDomListener(window, 'resize', initMap);
 }
@@ -69,6 +81,11 @@ var initMap = function() {
 
 // Create place
 var Place = function(data){
+	this.name = data.name;
+	this.loc = '{lat:' + data.latitude + ', lng:' + data.longitude + '}';
+}
+
+var Marker = function(data){
 	this.name = data.name;
 	this.loc = '{lat:' + data.latitude + ', lng:' + data.longitude + '}';
 }
