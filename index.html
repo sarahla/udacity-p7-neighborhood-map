@@ -19,7 +19,7 @@
 
         <!-- Menu -->
         <input data-bind="value: filter, valueUpdate: 'afterkeydown'" placeholder="Search" />
-        <ul class="vertical menu" data-bind="foreach: markerList">
+        <ul class="vertical menu" data-bind="foreach: placeList">
           <li><a href="#" data-bind="text: $data.name, click: $data.clickedPlace"></a></li>
         </ul>
 

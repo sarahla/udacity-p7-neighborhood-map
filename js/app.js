@@ -5,8 +5,8 @@
 var places = [
 	{
 		name: 'Carlos & Sarah\'s New Place',
-		latitude: 41.7484685,
-		longitude: -72.7022609
+		latitude: 41.7677606,
+		longitude: -72.6970694
 	},
 	{
 		name: 'Carlos\' Old Place',
@@ -40,51 +40,63 @@ var places = [
 **/
 var map,
 	infowindow,
-	markerList = ko.observableArray([]);
+	placeList = ko.observableArray([]);
 
 /**
 * Define Place Class
 **/
 var Place = function(data) {
-	
 	var self = this;
 
-	this.name = data.name;
-	this.loc = {lat: data.latitude, lng: data.longitude}
-	this.info = 
-	this.createMarker = function(){
-    var newMarker = new google.maps.Marker({
+	self.name = data.name;
+	self.loc = {lat: data.latitude, lng: data.longitude};
+	self.createMarker = function(){
+    	self.newMarker = new google.maps.Marker({
 		    map: map,
 		    animation: google.maps.Animation.DROP,
 		    position: self.loc
- 		}).addListener('click', function(){
+ 		}).addListener('click', function(info){
  			self.clickedPlace();
  		});
 	};
-	this.clickedPlace = function(){
+	self.clickedPlace = function(){
 		infowindow.open(map);
 		infowindow.setPosition( self.loc );
 		infowindow.setContent(data.name)
 		map.setCenter( self.loc );
+		self.animateMarker();
 	};
+	self.animateMarker = function(){
+		// Check all other markers and set their animation to none
+		placeList().forEach(function(info){
+			var marker = info.newMarker.Mb;
+    		if (marker.animation != 'null'){
+    			marker.setAnimation('null');
+    		}
+    	});
+
+		// Animate current marker
+		self.newMarker.Mb.setAnimation(google.maps.Animation.BOUNCE);
+	}
 
 };
+
 
 /**
 * Create ViewModel
 **/
 function viewModel() {
-	
+
 	var self = this;
 
 	// Push markers to observable array in global scope
     places.forEach(function(info){
-    	markerList.push( new Place(info) );
+    	placeList.push( new Place(info) );
     });
 
     self.filter = ko.observable('');
     self.filterResults = ko.computed(function(){
-    
+
     });
 
 };
@@ -113,13 +125,16 @@ var initMap = function() {
 	});
 
    	// Generate markers based on same observable array in list
- 	markerList().forEach(function(info){
+ 	placeList().forEach(function(info){
     	 info.createMarker();
     });
 
  	// Reinit map when window resizes to help with responsive layout
     google.maps.event.addDomListener(window, 'resize', initMap);
+
 };
+
+
 
 
 
