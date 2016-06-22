@@ -42,7 +42,6 @@ var map,
 	infowindow,
 	markerList = ko.observableArray([]);
 
-
 /**
 * Define Place Class
 **/
@@ -71,13 +70,21 @@ var Place = function(data) {
 
 };
 
-// Create ViewModel
+/**
+* Create ViewModel
+**/
 function viewModel() {
 	
 	var self = this;
 
+	// Push markers to observable array in global scope
     places.forEach(function(info){
     	markerList.push( new Place(info) );
+    });
+
+    self.filter = ko.observable('');
+    self.filterResults = ko.computed(function(){
+    
     });
 
 };
@@ -85,14 +92,14 @@ function viewModel() {
 // Activates knockout.js
 ko.applyBindings(new viewModel());
 
+
 /**
 * Google Map
 **/
 
-// Initialize Google Map
-
 var initMap = function() {
 
+	// Initialize Google Map
     map = new google.maps.Map(document.getElementById('map'), {
       center: {lat: 41.7484685, lng: -72.7022609},
       zoom: 14
@@ -105,10 +112,12 @@ var initMap = function() {
 			pixelOffset: {width: -2, height: -30}
 	});
 
+   	// Generate markers based on same observable array in list
  	markerList().forEach(function(info){
     	 info.createMarker();
     });
 
+ 	// Reinit map when window resizes to help with responsive layout
     google.maps.event.addDomListener(window, 'resize', initMap);
 };
 
