@@ -10,3 +10,8 @@ body,
 #map {
     height: 100%;
 }
+
+.gm-style div{
+	// Make centering of map smoother
+	transition: transform 100ms ease-in-out;
+}
