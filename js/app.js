@@ -35,43 +35,24 @@ var places = [
 	}
 ]
 
+/**
+* Global Variables
+**/
+var map,
+	infowindow,
+	markerList = ko.observableArray([]);
+
 
 /**
-* API Functionality
+* Define Place Class
 **/
-
-// Initialize Google Map
-var map,
-	infowindow;
-
-var initMap = function() {
-
-    map = new google.maps.Map(document.getElementById('map'), {
-      center: {lat: 41.7484685, lng: -72.7022609},
-      zoom: 14
-    });
-
-    // Create infoWindow
-   	infowindow = new google.maps.InfoWindow({
-			content: '',
-			infoposition: {},
-			pixelOffset: {width: -2, height: -30}
-	});
-
- 	places.forEach(function(info){
-    	 var place = new Place(info);
-    	 place.createMarker();
-    });
-
-    google.maps.event.addDomListener(window, 'resize', initMap);
-}
-
 var Place = function(data) {
 	
 	var self = this;
 
 	this.name = data.name;
 	this.loc = {lat: data.latitude, lng: data.longitude}
+	this.info = 
 	this.createMarker = function(){
     var newMarker = new google.maps.Marker({
 		    map: map,
@@ -88,24 +69,49 @@ var Place = function(data) {
 		map.setCenter( self.loc );
 	};
 
-}
+};
 
 // Create ViewModel
-function markerViewModel() {
-
+function viewModel() {
+	
 	var self = this;
 
-    //this.markerList = ko.observableArray([]);
-    this.markerList = [];
-
     places.forEach(function(info){
-    	self.markerList.push( new Place(info) );
+    	markerList.push( new Place(info) );
     });
 
-}
+};
 
 // Activates knockout.js
-ko.applyBindings(new markerViewModel());
+ko.applyBindings(new viewModel());
+
+/**
+* Google Map
+**/
+
+// Initialize Google Map
+
+var initMap = function() {
+
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: 41.7484685, lng: -72.7022609},
+      zoom: 14
+    });
+
+    // Create infoWindow
+   	infowindow = new google.maps.InfoWindow({
+			content: '',
+			infoposition: {},
+			pixelOffset: {width: -2, height: -30}
+	});
+
+ 	markerList().forEach(function(info){
+    	 info.createMarker();
+    });
+
+    google.maps.event.addDomListener(window, 'resize', initMap);
+};
+
 
 
 /**
