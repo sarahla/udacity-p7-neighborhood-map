@@ -51,43 +51,43 @@ var initMap = function() {
       zoom: 14
     });
 
+    // Create infoWindow
    	infowindow = new google.maps.InfoWindow({
-			content: 'TESTING',
-			infoposition: {lat: 41.7484685, lng: -72.7022609}
+			content: '',
+			infoposition: {},
+			pixelOffset: {width: -2, height: -30}
 	});
 
-    places.forEach(function(data, i){
-    	var marker = new google.maps.Marker({
-		    map: map,
-		    animation: google.maps.Animation.DROP,
-		    position: {lat: data.latitude, lng: data.longitude}
- 		}).addListener('click', function(){
- 			infowindow.open(map);
- 			infowindow.setPosition( {lat: data.latitude, lng: data.longitude} );
- 			console.log(infowindow.infowindowposition);
- 		});
+ 	places.forEach(function(info){
+    	 var place = new Place(info);
+    	 place.createMarker();
     });
-
-    console.log(infowindow.position);
 
     google.maps.event.addDomListener(window, 'resize', initMap);
 }
 
+var Place = function(data) {
+	
+	var self = this;
 
-/**
-* Knockout Functionality
-**/
-
-
-// Create place
-var Place = function(data){
 	this.name = data.name;
-	this.loc = '{lat:' + data.latitude + ', lng:' + data.longitude + '}';
-}
+	this.loc = {lat: data.latitude, lng: data.longitude}
+	this.createMarker = function(){
+    var newMarker = new google.maps.Marker({
+		    map: map,
+		    animation: google.maps.Animation.DROP,
+		    position: self.loc
+ 		}).addListener('click', function(){
+ 			self.clickedPlace();
+ 		});
+	};
+	this.clickedPlace = function(){
+		infowindow.open(map);
+		infowindow.setPosition( self.loc );
+		infowindow.setContent(data.name)
+		map.setCenter( self.loc );
+	};
 
-var Marker = function(data){
-	this.name = data.name;
-	this.loc = '{lat:' + data.latitude + ', lng:' + data.longitude + '}';
 }
 
 // Create ViewModel
@@ -98,9 +98,10 @@ function markerViewModel() {
     //this.markerList = ko.observableArray([]);
     this.markerList = [];
 
-    places.forEach(function(markerInfo){
-    	self.markerList.push( new Place(markerInfo) );
+    places.forEach(function(info){
+    	self.markerList.push( new Place(info) );
     });
+
 }
 
 // Activates knockout.js

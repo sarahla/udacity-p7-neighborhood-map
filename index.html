@@ -19,7 +19,7 @@
 
         <!-- Menu -->
         <ul class="vertical menu" data-bind="foreach: markerList">
-          <li><a href="#" data-bind="text: $data.name">Foundation</a></li>
+          <li><a href="#" data-bind="text: $data.name, click: $data.clickedPlace"></a></li>
         </ul>
 
         </div>
