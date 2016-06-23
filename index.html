@@ -18,8 +18,8 @@
         </button>
 
         <!-- Menu -->
-        <input data-bind="value: filter, valueUpdate: 'afterkeydown'" placeholder="Search" />
-        <ul class="vertical menu" data-bind="foreach: placeList">
+        <input data-bind="value: searchTerm, valueUpdate: 'afterkeydown'" placeholder="Search" />
+        <ul class="vertical menu" data-bind="foreach: filterResults">
           <li><a href="#" data-bind="text: $data.name, click: $data.clickedPlace"></a></li>
         </ul>
 
@@ -41,7 +41,7 @@
     <script src="bower_components/what-input/what-input.js"></script>
     <script src="bower_components/foundation-sites/dist/foundation.js"></script>
     <script src="bower_components/knockout/dist/knockout.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfRgUNm19mQayW4KUzqnK-EaNwpakF3Ew&callback=initMap"
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfRgUNm19mQayW4KUzqnK-EaNwpakF3Ew&callback=initApp"
     async defer></script>
     <script src="js/app.js" async></script>
   </body>

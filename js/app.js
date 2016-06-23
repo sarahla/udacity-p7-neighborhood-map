@@ -36,47 +36,47 @@ var places = [
 ]
 
 /**
-* Global Variables
-**/
-var map,
-	infowindow,
-	placeList = ko.observableArray([]);
-
-/**
 * Define Place Class
 **/
 var Place = function(data) {
 	var self = this;
 
-	self.name = data.name;
-	self.loc = {lat: data.latitude, lng: data.longitude};
-	self.createMarker = function(){
+	this.name = data.name;
+	this.loc = {lat: data.latitude, lng: data.longitude};
+
+	// Create marker and immediately invoke function
+	this.createMarker = (function(){
+    	
     	self.newMarker = new google.maps.Marker({
 		    map: map,
 		    animation: google.maps.Animation.DROP,
 		    position: self.loc
- 		}).addListener('click', function(info){
+ 		});
+
+ 		self.newMarker.addListener('click', function(){
  			self.clickedPlace();
  		});
-	};
-	self.clickedPlace = function(){
+
+	})();
+
+	this.clickedPlace = function(){
 		infowindow.open(map);
 		infowindow.setPosition( self.loc );
 		infowindow.setContent(data.name)
 		map.setCenter( self.loc );
 		self.animateMarker();
 	};
-	self.animateMarker = function(){
+	this.animateMarker = function(){
 		// Check all other markers and set their animation to none
-		placeList().forEach(function(info){
-			var marker = info.newMarker.Mb;
-    		if (marker.animation != 'null'){
-    			marker.setAnimation('null');
+		placeList().forEach(function(marker){
+			
+    		if (marker.newMarker.animation != 'null'){
+    			marker.newMarker.setAnimation('null');
     		}
     	});
 
 		// Animate current marker
-		self.newMarker.Mb.setAnimation(google.maps.Animation.BOUNCE);
+		self.newMarker.setAnimation(google.maps.Animation.BOUNCE);
 	}
 
 };
@@ -89,25 +89,60 @@ function viewModel() {
 
 	var self = this;
 
-	// Push markers to observable array in global scope
+	placeList = ko.observableArray([]);
+
+	// Push markers to observable array
     places.forEach(function(info){
     	placeList.push( new Place(info) );
     });
 
-    self.filter = ko.observable('');
-    self.filterResults = ko.computed(function(){
 
+    // Set Active Location
+    this.activePlace = ko.observable(placeList()[0] );
+    
+    this.changePlace = function(clickedPlace){
+		self.activePlace(clickedPlace);
+	};
+
+	console.log(activePlace());
+    
+    // Filter based on text input
+    this.searchTerm = ko.observable('');
+    this.filterResults = ko.computed(function(){
+
+        // return a list of locations filtered by the searchTerm
+        return placeList().filter(function (location) {
+            
+            var display = true;
+            
+            if (self.searchTerm() !== ''){
+                
+                // check if the location name contains the searchTerm
+                if (location.name.toLowerCase().indexOf(self.searchTerm().toLowerCase()) !== -1){
+                    display = true;
+                }else {
+                    display = false;
+                }
+
+            }
+            
+            // toggle map marker based on the filter
+            location.newMarker.setVisible(display);
+
+            return display;
+        });
     });
 
 };
-
-// Activates knockout.js
-ko.applyBindings(new viewModel());
 
 
 /**
 * Google Map
 **/
+
+// Global vars for map function
+var map,
+	infowindow;
 
 var initMap = function() {
 
@@ -124,17 +159,18 @@ var initMap = function() {
 			pixelOffset: {width: -2, height: -30}
 	});
 
-   	// Generate markers based on same observable array in list
- 	placeList().forEach(function(info){
-    	 info.createMarker();
-    });
-
  	// Reinit map when window resizes to help with responsive layout
     google.maps.event.addDomListener(window, 'resize', initMap);
 
 };
 
 
+var initApp = function(){
+	initMap();
+
+	// Activates knockout.js
+	ko.applyBindings(new viewModel());
+}
 
 
 
