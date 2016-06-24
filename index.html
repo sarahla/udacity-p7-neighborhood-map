@@ -5,6 +5,8 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SarahLa's Neighborhood Map!</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
     <link rel="stylesheet" href="css/app.css">
   </head>
   <body>
@@ -18,17 +20,22 @@
         </button>
 
         <!-- Menu -->
-        <input data-bind="value: searchTerm, valueUpdate: 'afterkeydown'" placeholder="Search" />
-        <ul class="vertical menu" data-bind="foreach: filterResults">
-          <li><a href="#" data-bind="text: $data.name, click: $data.clickedPlace"></a></li>
-        </ul>
+        <nav class="off-canvas-nav">
+          <div class="row column">
+            <input data-bind="value: searchTerm, valueUpdate: 'afterkeydown'" placeholder="Filter Places" />
+          </div>
+
+          <ul class="vertical menu" data-bind="foreach: filterResults">
+            <li><a href="#" data-bind="text: $data.name, click: $data.clickedPlace"></a></li>
+          </ul>
+        </nav>
 
         </div>
 
         <div class="off-canvas-content" data-off-canvas-content>
          <div class="title-bar">
             <div class="title-bar-left">
-              <button class="menu-icon" type="button" data-open="offCanvas"></button>
+              <button class="menu-icon hide-for-large" type="button" data-open="offCanvas"></button>
               <span class="title-bar-title">Sarah's Awesome Neighborhood Map</span>
             </div>
           </div>

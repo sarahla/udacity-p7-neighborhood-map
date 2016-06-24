@@ -7,11 +7,41 @@ body,
     margin: 0;
     padding: 0;
 }
-#map {
-    height: 100%;
+
+.off-canvas-wrapper {
+	background-color: $offcanvas-background;
 }
 
-.gm-style div{
+#map {
+    height: calc(100% - 42px);
+}
+
+.gm-style div {
 	// Make centering of map smoother
 	transition: transform 100ms ease-in-out;
+}
+
+.off-canvas-nav {
+
+	input {
+		margin: rem-calc(15) 0;
+		width: 100%;
+	}
+
+	li {
+		border-top: 1px solid darken($indigo, 5%);
+
+		&:last-child{
+			border-bottom: 1px solid darken($indigo, 5%);
+		}
+	}
+
+	a {
+		text-transform: uppercase;
+		color: $light-gray;
+
+		&:hover {
+			color: $avocado;
+		}
+	}
 }

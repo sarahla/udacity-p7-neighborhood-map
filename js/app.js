@@ -80,19 +80,24 @@ var Place = function(data) {
 	        		var photoSize = 'm';
 
 	        		// set photo html
-	        		self.photo = '<img src="https://farm'+ photoFarm +'.staticflickr.com/'+ photoServer +'/'+ photoID +'_'+ photoSecret +'_' + photoSize + '.jpg" alt="' + photoTitle + '">';
+	        		self.photo = '<img src="https://farm'+ photoFarm +'.staticflickr.com/'+ photoServer +'/'+ photoID +'_'+ photoSecret +'_' + photoSize + '.jpg" alt="' + photoTitle + '"> <br><small>Photo courtesy of Flickr.</small>';
 	        	}
 
 	        	else{
+
+	        		// if no photo is available for this place, display text
 	        		self.photo = 'No Images Here! Check back later.'
+
 	        	};
         	};
 
+        }).fail(function() {
 
+        	// If API is broken, log error and display text
+            console.log("error in ajax call to flickr api");
+            self.photo = 'There\'s a problem with Flickr right now.';
 
-
-
-        })
+        });
 
 	})();
 
@@ -239,7 +244,7 @@ var initMap = function() {
 	});
 
  	// Reinit map when window resizes to help with responsive layout
-    google.maps.event.addDomListener(window, 'resize', initMap);
+    google.maps.event.addDomListener(window, 'resize', initApp);
 
 };
 
