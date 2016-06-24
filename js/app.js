@@ -4,35 +4,36 @@
 
 var places = [
 	{
-		name: 'Carlos & Sarah\'s New Place',
-		latitude: 41.7677606,
-		longitude: -72.6970694
-	},
-	{
-		name: 'Carlos\' Old Place',
-		latitude: 41.7283519,
-		longitude: -72.6790308
-	},
-	{
-		name: 'Casona',
-		latitude: 41.7372315,
-		longitude: -72.6737393
-	},
-	{
 		name: 'Elizabeth Park',
-		latitude: 41.77388,
-		longitude: -72.721249
+		latitude: 41.7756223,
+		longitude: -72.7166942
 	},
 	{
-		name: 'Brazil Grill',
-		latitude: 41.7565039,
-		longitude: -72.7142382
+		name: 'Pope Park',
+		latitude: 41.756013,
+		longitude: -72.697787
 	},
 	{
-		name: 'Friendly\'s',
-		latitude: 41.7545085,
-		longitude: -72.6835029
+		name: 'Bushnell Park',
+		latitude: 41.764119,
+		longitude: -72.683039
+	},
+	{
+		name: 'Goodwin Park',
+		latitude: 41.726256,
+		longitude: -72.6992573
+	},
+	{
+		name: 'Riverside Park',
+		latitude: 41.776326,
+		longitude: -72.664807
+	},
+	{
+		name: 'Liam E. McGee Memorial Park',
+		latitude: 41.771397,
+		longitude: -72.6856313
 	}
+
 ]
 
 /**
@@ -43,11 +44,13 @@ var Place = function(data) {
 	var self = this;
 
 	this.name = data.name;
+	this.lat = data.latitude;
+	this.lon = data.longitude;
 	this.loc = {lat: data.latitude, lng: data.longitude};
 
 	this.getContent = (function(){
-		// var wikipediaURL = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=' + self.name + '&prop=revisions&rvprop=content&format=json&limit=1';
-		var flickrURL = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=2e4da4d7b00160fa26b6c7b5419a9dd1&format=json&lat=41.77388&lon=-72.721249&radius=.1&radius_units=mi';
+
+		var flickrURL = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=2e4da4d7b00160fa26b6c7b5419a9dd1&format=json&lat=' + self.lat + '&lon=' + self.lon + '&radius=.1&radius_units=mi';
 
 		jQuery.ajax({
             url: flickrURL,
@@ -55,19 +58,39 @@ var Place = function(data) {
             jsonp: 'jsoncallback'
         }).done(function(response){
 
-        	var photo = '';
-
-        	// Get random number between 1-99 to pick random photo
-        	var randomImage = Math.floor(Math.random() * 250) + 1
+        	self.photo = '';
 
         	if (response){
-        		photoOwner = response.photos.photo[randomImage].owner;
-        		photoId = response.photos.photo[randomImage].id;
-        		photoTitle = response.photos.photo[randomImage].title;
-        		photo += '<img src="https://www.flickr.com/photos/' + photoOwner + '/' + photoId + ' alt="' + photoTitle + '">';
-        	}
 
-        	console.log(response);
+        		// define image
+        		var photo = response.photos.photo[0];
+
+        		// check if image comes back undefined
+        		if (typeof photo !== 'undefined'){
+
+	        		// get image details
+	        		var photoFarm = photo.farm;
+	        		var photoServer = photo.server;
+	        		var photoSecret = photo.secret;
+	        		var photoOwner = photo.owner;
+	        		var photoID = photo.id;
+	        		var photoTitle = photo.title;
+
+	        		// set desired thumbnail Size
+	        		var photoSize = 'm';
+
+	        		// set photo html
+	        		self.photo = '<img src="https://farm'+ photoFarm +'.staticflickr.com/'+ photoServer +'/'+ photoID +'_'+ photoSecret +'_' + photoSize + '.jpg" alt="' + photoTitle + '">';
+	        	}
+
+	        	else{
+	        		self.photo = 'No Images Here! Check back later.'
+	        	};
+        	};
+
+
+
+
 
         })
 
@@ -92,14 +115,14 @@ var Place = function(data) {
 	// Define what happens when you click this place
 	this.clickedPlace = function(){
 
-		// open the info window
-		infowindow.open(map);
-
 		// set the infowindow's position
 		infowindow.setPosition( self.loc );
 
+		// open the info window
+		infowindow.open(map);
+
 		// set the infowindow's content
-		infowindow.setContent(data.name)
+		infowindow.setContent('<h3>' + self.name + '</h3>' + self.photo)
 
 		// center the map around this location
 		map.setCenter( self.loc );
