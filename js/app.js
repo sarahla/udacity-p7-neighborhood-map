@@ -60,9 +60,9 @@ var Place = function(data) {
 		var flickrURL = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=2e4da4d7b00160fa26b6c7b5419a9dd1&format=json&lat=' + self.lat + '&lon=' + self.lon + '&radius=.1&radius_units=mi';
 
 		jQuery.ajax({
-            url: flickrURL,
-            dataType: 'jsonp',
-            jsonp: 'jsoncallback'
+        	url: flickrURL,
+        	dataType: 'jsonp',
+        	jsonp: 'jsoncallback'
         }).done(function(response){
 
         	self.photo = '';
@@ -101,8 +101,8 @@ var Place = function(data) {
         }).fail(function() {
 
         	// if API is broken, log error and display text
-            console.log("error in ajax call to flickr api");
-            self.photo = 'There\'s a problem with Flickr right now.';
+        	console.log("error in ajax call to flickr api");
+        	self.photo = 'There\'s a problem with Flickr right now.';
 
         });
 
@@ -112,9 +112,9 @@ var Place = function(data) {
 	this.createMarker = (function(){
 
     	self.newMarker = new google.maps.Marker({
-		    map: map,
-		    animation: google.maps.Animation.DROP,
-		    position: self.loc
+			map: map,
+			animation: google.maps.Animation.DROP,
+			position: self.loc
  		});
 
     	// add click event listener to the marker
@@ -141,7 +141,6 @@ var Place = function(data) {
 
 		// set the infowindow's content
 		infowindow.setContent('<p class="place-name">' + self.name + '</p>' + self.photo);
-
 
 		// animate the marker
 		self.animateMarker();
@@ -235,6 +234,9 @@ function viewModel() {
             // toggle map marker based on the filter
             location.newMarker.setVisible(display);
 
+            // close infowindow
+            infowindow.close();
+
             return display;
 
         });
@@ -287,8 +289,8 @@ function initMap() {
 
 // error handling for map
 function googleMapsApiErrorHandler(){
-    console.log('Error: Google maps API');
-    $('#map').append('<p class="map-error">We\'re having trouble loading Google Map. Check back soon!</p>');
+	console.log('Error: Google maps API');
+	$('#map').append('<p class="map-error">We\'re having trouble loading Google Map. Check back soon!</p>');
 }
 
 /**
