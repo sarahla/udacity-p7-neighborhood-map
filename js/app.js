@@ -108,7 +108,7 @@ var Place = function(data) {
 
 	})();
 
-	// Create marker and immediately invoke function
+	// create marker and immediately invoke function
 	this.createMarker = (function(){
 
     	self.newMarker = new google.maps.Marker({
@@ -124,8 +124,14 @@ var Place = function(data) {
 
 	})();
 
-	// Define what happens when you click this place
+	// define what happens when you click this place
 	this.clickedPlace = function(){
+
+		// close offcanvas menu
+		$('#offCanvas').foundation('close');
+		
+		// center the map around this location
+		map.setCenter( self.loc );
 
 		// set the infowindow's position
 		infowindow.setPosition( self.loc );
