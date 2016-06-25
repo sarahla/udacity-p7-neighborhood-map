@@ -9,9 +9,9 @@ var places = [
 		longitude: -72.7166942
 	},
 	{
-		name: 'Pope Park',
-		latitude: 41.756013,
-		longitude: -72.697787
+		name: 'Mark Twain House',
+		latitude: 41.767066,
+		longitude: -72.700964
 	},
 	{
 		name: 'Bushnell Park',
@@ -19,9 +19,9 @@ var places = [
 		longitude: -72.683039
 	},
 	{
-		name: 'Goodwin Park',
-		latitude: 41.726256,
-		longitude: -72.6992573
+		name: 'Wadsworth Atheneum',
+		latitude: 41.763893,
+		longitude: -72.674024
 	},
 	{
 		name: 'Riverside Park',
@@ -29,12 +29,18 @@ var places = [
 		longitude: -72.664807
 	},
 	{
-		name: 'Liam E. McGee Memorial Park',
+		name: 'Liam E. McGee Park',
 		latitude: 41.771397,
 		longitude: -72.6856313
 	}
 
 ]
+
+/**
+* Define Globals
+**/
+var placeList,
+	activePlace;
 
 /**
 * Define Place Class
@@ -47,6 +53,7 @@ var Place = function(data) {
 	this.lat = data.latitude;
 	this.lon = data.longitude;
 	this.loc = {lat: data.latitude, lng: data.longitude};
+	this.activeClass = ko.observable(false);
 
 	this.getContent = (function(){
 
@@ -77,7 +84,7 @@ var Place = function(data) {
 	        		var photoTitle = photo.title;
 
 	        		// set desired thumbnail Size
-	        		var photoSize = 'm';
+	        		var photoSize = 'q';
 
 	        		// set photo html
 	        		self.photo = '<img src="https://farm'+ photoFarm +'.staticflickr.com/'+ photoServer +'/'+ photoID +'_'+ photoSecret +'_' + photoSize + '.jpg" alt="' + photoTitle + '"> <br><small>Photo courtesy of Flickr.</small>';
@@ -127,7 +134,7 @@ var Place = function(data) {
 		infowindow.open(map);
 
 		// set the infowindow's content
-		infowindow.setContent('<h3>' + self.name + '</h3>' + self.photo)
+		infowindow.setContent('<h2 class="place-name">' + self.name + '</h2>' + self.photo)
 
 		// center the map around this location
 		map.setCenter( self.loc );
@@ -135,16 +142,31 @@ var Place = function(data) {
 		// animate the marker
 		self.animateMarker();
 
+		// set this as active place
+		activePlace(this);
+
+		// reset active class if active
+		placeList().forEach(function(place){
+
+    		if (place.activeClass() === true){
+    			place.activeClass(false);
+    		}
+
+    	});
+
+    	// set this active class
+		self.activeClass(true);
+
 	};
 
 	// Animate the marker when you click it
 	this.animateMarker = function(){
 
 		// Check all other markers and set their animation to none
-		placeList().forEach(function(marker){
+		placeList().forEach(function(place){
 
-    		if (marker.newMarker.animation != 'null'){
-    			marker.newMarker.setAnimation('null');
+    		if (place.newMarker.animation != 'null'){
+    			place.newMarker.setAnimation('null');
     		}
 
     	});
@@ -167,6 +189,9 @@ function viewModel() {
 	// create observable array for list of places
 	placeList = ko.observableArray([]);
 
+	// create observable for active place
+	activePlace = ko.observable('');
+
 	// Push markers to observable array
     places.forEach(function(info){
 
@@ -174,13 +199,6 @@ function viewModel() {
 
     });
 
-    // Set default active place
-    this.activePlace = ko.observable(placeList()[0] );
-
-    // change the active place
-    this.changePlace = function(clickedPlace){
-		self.activePlace(clickedPlace);
-	};
 
     // get searchterm from text input
     this.searchTerm = ko.observable('');
@@ -219,7 +237,6 @@ function viewModel() {
 
 };
 
-
 /**
 * Google Map
 **/
@@ -229,10 +246,10 @@ var map,
 	infowindow;
 
 var initMap = function() {
-
+	var initialCenter = {lat: 41.771397, lng: -72.6856313};
 	// Initialize Google Map
     map = new google.maps.Map(document.getElementById('map'), {
-		center: {lat: 41.7484685, lng: -72.7022609},
+		center: initialCenter,
 		zoom: 14
     });
 
@@ -243,8 +260,10 @@ var initMap = function() {
 		pixelOffset: {width: -2, height: -30}
 	});
 
- 	// Reinit map when window resizes to help with responsive layout
-    google.maps.event.addDomListener(window, 'resize', initApp);
+ 	// Center map when window resizes to help with responsive layout
+    google.maps.event.addDomListener(window, 'resize', function(){
+    	map.setCenter(initialCenter);
+    });
 
 };
 
