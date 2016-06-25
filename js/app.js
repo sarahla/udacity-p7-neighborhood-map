@@ -54,8 +54,9 @@ var Place = function(data) {
 	this.lon = data.longitude;
 	this.loc = {lat: data.latitude, lng: data.longitude};
 	this.activeClass = ko.observable(false);
+	this.photo = '<div class="loading-graphic"></div>';
 
-	this.getContent = (function(){
+	this.getContent = function(){
 
 		var flickrURL = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=2e4da4d7b00160fa26b6c7b5419a9dd1&format=json&lat=' + self.lat + '&lon=' + self.lon + '&radius=.1&radius_units=mi';
 
@@ -64,8 +65,6 @@ var Place = function(data) {
         	dataType: 'jsonp',
         	jsonp: 'jsoncallback'
         }).done(function(response){
-
-        	self.photo = '';
 
         	if (response){
 
@@ -82,12 +81,13 @@ var Place = function(data) {
 	        		var photoOwner = photo.owner;
 	        		var photoID = photo.id;
 	        		var photoTitle = photo.title;
+	        		var photoLink = 'https://www.flickr.com/photos/' + photoOwner + '/' + photoID;
 
 	        		// set desired thumbnail Size
 	        		var photoSize = 'q';
 
 	        		// set photo html
-	        		self.photo = '<img src="https://farm'+ photoFarm +'.staticflickr.com/'+ photoServer +'/'+ photoID +'_'+ photoSecret +'_' + photoSize + '.jpg" alt="' + photoTitle + '"> <br><small>Photo courtesy of Flickr.</small>';
+	        		self.photo = '<img src="https://farm'+ photoFarm +'.staticflickr.com/'+ photoServer +'/'+ photoID +'_'+ photoSecret +'_' + photoSize + '.jpg" alt="' + photoTitle + '"> <br><small>Photo courtesy of <a class="attribution-link" target="_blank" href="' + photoLink + '" title="Photo Attribution">Flickr</a>.</small>';
 	        	}
 
 	        	else{
@@ -104,9 +104,20 @@ var Place = function(data) {
         	console.log("error in ajax call to flickr api");
         	self.photo = 'There\'s a problem with Flickr right now.';
 
+        }).always(function() {
+        	
+        	//set infowindow content
+        	infowindow.setContent('<p class="place-name">' + self.name + '</p>' + self.photo);
+
+        	// open the info window
+			infowindow.open(map);
+
+			// set the infowindow's position
+			infowindow.setPosition( self.loc );
+        
         });
 
-	})();
+	};
 
 	// create marker and immediately invoke function
 	this.createMarker = (function(){
@@ -133,14 +144,8 @@ var Place = function(data) {
 		// center the map around this location
 		map.setCenter( self.loc );
 
-		// set the infowindow's position
-		infowindow.setPosition( self.loc );
-
-		// open the info window
-		infowindow.open(map);
-
-		// set the infowindow's content
-		infowindow.setContent('<p class="place-name">' + self.name + '</p>' + self.photo);
+		// make ajax request when clicked
+		self.getContent();
 
 		// animate the marker
 		self.animateMarker();

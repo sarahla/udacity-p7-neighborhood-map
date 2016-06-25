@@ -26,6 +26,13 @@ body,
 	transition: transform 100ms ease-in-out;
 }
 
+.loading-graphic{
+	display: block;
+	background-color: $light-gray;
+	width: rem-calc(150);
+	height: rem-calc(150);
+}
+
 .off-canvas-nav {
 	
 	form {
@@ -60,6 +67,13 @@ body,
 			background-color: $teal;
 			color: $indigo;
 		}
+	}
+}
+
+.attribution-link{
+	color: $indigo;
+	&:hover{
+		color: $plum;
 	}
 }
 
