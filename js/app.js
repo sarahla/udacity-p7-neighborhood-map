@@ -34,7 +34,7 @@ var places = [
 		longitude: -72.6856313
 	}
 
-]
+];
 
 /**
 * Define Globals
@@ -93,10 +93,10 @@ var Place = function(data) {
 	        	else{
 
 	        		// if no photo is available for this place, display text
-	        		self.photo = 'No Images Here! Check back later.'
+	        		self.photo = 'No Images Here! Check back later.';
 
-	        	};
-        	};
+	        	}
+        	}
 
         }).fail(function() {
 
@@ -140,7 +140,7 @@ var Place = function(data) {
 		infowindow.open(map);
 
 		// set the infowindow's content
-		infowindow.setContent('<p class="place-name">' + self.name + '</p>' + self.photo)
+		infowindow.setContent('<p class="place-name">' + self.name + '</p>' + self.photo);
 
 
 		// animate the marker
@@ -240,7 +240,7 @@ function viewModel() {
 
     });
 
-};
+}
 
 /**
 * Initialize App
@@ -282,7 +282,7 @@ function initMap() {
     // call function to initialize map
     initApp();
 
-};
+}
 
 // error handling for map
 function googleMapsApiErrorHandler(){
