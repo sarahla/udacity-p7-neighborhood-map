@@ -140,10 +140,8 @@ var Place = function(data) {
 		infowindow.open(map);
 
 		// set the infowindow's content
-		infowindow.setContent('<h2 class="place-name">' + self.name + '</h2>' + self.photo)
+		infowindow.setContent('<p class="place-name">' + self.name + '</p>' + self.photo)
 
-		// center the map around this location
-		map.setCenter( self.loc );
 
 		// animate the marker
 		self.animateMarker();
@@ -165,10 +163,10 @@ var Place = function(data) {
 
 	};
 
-	// Animate the marker when you click it
+	// animate the marker when you click it
 	this.animateMarker = function(){
 
-		// Check all other markers and set their animation to none
+		// check all other markers and set their animation to none
 		placeList().forEach(function(place){
 
     		if (place.newMarker.animation != 'null'){
@@ -177,7 +175,7 @@ var Place = function(data) {
 
     	});
 
-		// Animate current marker
+		// animate current marker
 		self.newMarker.setAnimation(google.maps.Animation.BOUNCE);
 
 	};
@@ -188,6 +186,7 @@ var Place = function(data) {
 /**
 * Create ViewModel
 **/
+
 function viewModel() {
 
 	var self = this;
@@ -244,48 +243,56 @@ function viewModel() {
 };
 
 /**
+* Initialize App
+**/
+
+function initApp(){
+	// activates knockout.js
+	ko.applyBindings(new viewModel());
+}
+
+/**
 * Google Map
 **/
 
-// Global vars for map function
+// global vars for map function
 var map,
 	infowindow;
 
-var initMap = function() {
+function initMap() {
 	var initialCenter = {lat: 41.771397, lng: -72.6856313};
-	// Initialize Google Map
+	// initialize Google Map
     map = new google.maps.Map(document.getElementById('map'), {
 		center: initialCenter,
 		zoom: 14
     });
 
-    // Create infoWindow
+    // create infoWindow
    	infowindow = new google.maps.InfoWindow({
 		content: '',
 		infoposition: {},
 		pixelOffset: {width: -2, height: -30}
 	});
 
- 	// Center map when window resizes to help with responsive layout
+ 	// center map when window resizes to help with responsive layout
     google.maps.event.addDomListener(window, 'resize', function(){
     	map.setCenter(initialCenter);
     });
 
+    // call function to initialize map
+    initApp();
+
 };
 
-
-var initApp = function(){
-	initMap();
-
-	// Activates knockout.js
-	ko.applyBindings(new viewModel());
+// error handling for map
+function googleMapsApiErrorHandler(){
+    console.log('Error: Google maps API');
+    $('#map').append('<p class="map-error">We\'re having trouble loading Google Map. Check back soon!</p>');
 }
-
-
 
 /**
 * General Functionality
 **/
 
-// Initialize Foundation Scripts
+// initialize foundation scripts
 $(document).foundation();
