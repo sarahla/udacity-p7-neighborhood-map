@@ -12,8 +12,13 @@ body,
 	background-color: $offcanvas-background;
 }
 
+.js-off-canvas-exit {
+	background-color: transparent;
+}
+
 #map {
-    height: calc(100% - 42px);
+    height: calc(100% - 75px);
+    width: 100%;
 }
 
 .gm-style div {
@@ -22,16 +27,22 @@ body,
 }
 
 .off-canvas-nav {
+	
+	form {
+		
+		background-color: darken($indigo, 10%);
 
-	input {
-		margin: rem-calc(15) 0;
-		width: 100%;
+		input {
+			margin: rem-calc(15) 0;
+			width: 100%;
+			padding: rem-calc(10);
+		}
 	}
 
 	li {
 		border-top: 1px solid darken($indigo, 5%);
 
-		&:last-child{
+		&:last-child {
 			border-bottom: 1px solid darken($indigo, 5%);
 		}
 	}
@@ -45,7 +56,7 @@ body,
 			color: $avocado;
 		}
 
-		&.active{
+		&.active {
 			background-color: $teal;
 			color: $indigo;
 		}
@@ -53,22 +64,28 @@ body,
 }
 
 .title-bar {
-	.title-bar-title{
+	height: rem-calc(75);
+	padding: 0 rem-calc(20);
+	
+	.title-bar-title {
 		font-size: 1.25rem;
 		margin: 0;
 		padding: 0;
+		line-height: rem-calc(75);
 	}
 
-	.place-label{
+	.place-label {
 		display: block;
+		line-height: rem-calc(75);
+		color: $avocado;
 	}
 }
 
-.place-name{
-	font-size: 1.5rem;
+.place-name {
+	font-size: 1.25rem;
 }
 
-.no-results{
+.no-results {
 	display: inline-block;
 	width: 100%;
 	text-align: center;
