@@ -15,15 +15,15 @@
         <div class="off-canvas position-left reveal-for-large" id="offCanvas" data-off-canvas>
 
         <!-- Close button -->
-        <button class="close-button" aria-label="Close menu" type="button" data-close>
+      <!--   <button class="close-button" aria-label="Close menu" type="button" data-close>
           <span aria-hidden="true">&times;</span>
-        </button>
+        </button> -->
 
         <!-- Menu -->
         <nav class="off-canvas-nav">
-          <div class="row column">
+          <form class="row column">
             <input data-bind="value: searchTerm, valueUpdate: 'afterkeydown'" placeholder="Filter Places" />
-          </div>
+          </form>
 
           <ul class="vertical menu" data-bind="foreach: filterResults">
             <li><a href="#" data-bind="text: $data.name, click: clickedPlace, css: { active: $data.activeClass }"></a></li>
@@ -37,9 +37,9 @@
          <div class="title-bar">
             <div class="title-bar-left">
               <button class="menu-icon hide-for-large" type="button" data-open="offCanvas"></button>
-              <h1 class="title-bar-title">Cool Stuff in Sarah's Neighborhood</h1>
+              <h1 class="title-bar-title">Sarah's Neighborhood</h1>
             </div>
-            <div class="title-bar-right">
+            <div class="title-bar-right show-for-large">
               <span class="place-label" data-bind="text: activePlace().name"></span>
               <button class="menu-icon hide-for-large" type="button" data-open="offCanvas"></button>
             </div>
