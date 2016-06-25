@@ -1,5 +1,5 @@
 # Sarah's Neighborhood Map
-_ Udacity FEND Nanodegree Project 7 _
+Udacity FEND Nanodegree Project 7
 
 ## About My Project
 
