@@ -133,6 +133,10 @@ var Place = function(data) {
  			self.clickedPlace();
  		});
 
+ 		// push location to bounds array
+ 		self.latLng = new google.maps.LatLng(parseFloat(self.lat), parseFloat(self.lon));
+ 		map.bounds.extend(self.latLng);
+
 	})();
 
 	// define what happens when you click this place
@@ -196,6 +200,9 @@ function viewModel() {
 
 	var self = this;
 
+	 // fit map to new bounds
+    map.fitBounds(map.bounds);
+
 	// create observable array for list of places
 	placeList = ko.observableArray([]);
 
@@ -208,7 +215,6 @@ function viewModel() {
     	placeList.push( new Place(info) );
 
     });
-
 
     // get searchterm from text input
     this.searchTerm = ko.observable('');
@@ -257,6 +263,7 @@ function viewModel() {
 function initApp(){
 	// activates knockout.js
 	ko.applyBindings(new viewModel());
+
 }
 
 /**
@@ -268,12 +275,17 @@ var map,
 	infowindow;
 
 function initMap() {
+	
 	var initialCenter = {lat: 41.771397, lng: -72.6856313};
+	
 	// initialize Google Map
     map = new google.maps.Map(document.getElementById('map'), {
 		center: initialCenter,
 		zoom: 14
     });
+
+    // initialize bounds variable
+    map.bounds = new google.maps.LatLngBounds();
 
     // create infoWindow
    	infowindow = new google.maps.InfoWindow({
@@ -284,10 +296,16 @@ function initMap() {
 
  	// center map when window resizes to help with responsive layout
     google.maps.event.addDomListener(window, 'resize', function(){
+    	
+    	// set center of map
     	map.setCenter(initialCenter);
+    	
+    	 // fit map to new bounds
+    	map.fitBounds(map.bounds);
+   
     });
 
-    // call function to initialize map
+    // call function to initialize app
     initApp();
 
 }
