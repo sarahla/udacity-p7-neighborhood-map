@@ -39,9 +39,38 @@ body,
 	a {
 		text-transform: uppercase;
 		color: $light-gray;
+		transition: all 300ms ease-in-out;
 
 		&:hover {
 			color: $avocado;
 		}
+
+		&.active{
+			background-color: $teal;
+			color: $indigo;
+		}
 	}
+}
+
+.title-bar {
+	.title-bar-title{
+		font-size: 1.25rem;
+		margin: 0;
+		padding: 0;
+	}
+
+	.place-label{
+		display: block;
+	}
+}
+
+.place-name{
+	font-size: 1.5rem;
+}
+
+.no-results{
+	display: inline-block;
+	width: 100%;
+	text-align: center;
+	color: darken($indigo, 20%);
 }

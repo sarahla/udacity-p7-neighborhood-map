@@ -26,8 +26,9 @@
           </div>
 
           <ul class="vertical menu" data-bind="foreach: filterResults">
-            <li><a href="#" data-bind="text: $data.name, click: $data.clickedPlace"></a></li>
+            <li><a href="#" data-bind="text: $data.name, click: clickedPlace, css: { active: $data.activeClass }"></a></li>
           </ul>
+          <span data-bind="visible: filterResults().length < 1" class="no-results">No Results</span>
         </nav>
 
         </div>
@@ -36,7 +37,11 @@
          <div class="title-bar">
             <div class="title-bar-left">
               <button class="menu-icon hide-for-large" type="button" data-open="offCanvas"></button>
-              <span class="title-bar-title">Sarah's Awesome Neighborhood Map</span>
+              <h1 class="title-bar-title">Cool Stuff in Sarah's Neighborhood</h1>
+            </div>
+            <div class="title-bar-right">
+              <span class="place-label" data-bind="text: activePlace().name"></span>
+              <button class="menu-icon hide-for-large" type="button" data-open="offCanvas"></button>
             </div>
           </div>
           <div id="map"></div>
