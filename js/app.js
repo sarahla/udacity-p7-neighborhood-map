@@ -100,7 +100,7 @@ var Place = function(data) {
 
         }).fail(function() {
 
-        	// If API is broken, log error and display text
+        	// if API is broken, log error and display text
             console.log("error in ajax call to flickr api");
             self.photo = 'There\'s a problem with Flickr right now.';
 
