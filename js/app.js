@@ -37,10 +37,13 @@ var places = [
 ];
 
 /**
-* Define Globals
+* Define Global Variables
 **/
 var placeList,
-	activePlace;
+	activePlace,
+	map,
+	infowindow;
+
 
 /**
 * Define Place Class
@@ -269,10 +272,6 @@ function initApp(){
 /**
 * Google Map
 **/
-
-// global vars for map function
-var map,
-	infowindow;
 
 function initMap() {
 	
