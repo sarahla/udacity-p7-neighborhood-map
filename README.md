@@ -13,7 +13,13 @@ To build this project, download it with Git:
 git clone https://github.com/sarahla/udacity-p7-neighborhood-map.git
 ```
 
-Then open the folder in your command line, and install the dependencies:
+If you don't have gulp installed, run the following command in your command line
+
+```bash
+npm install --global gulp-cli
+```
+
+Then cd into the project folder, and install the dependencies:
 
 ```bash
 npm install
@@ -22,4 +28,10 @@ bower install
 
 Then, run `gulp sass` to run the Sass compiler. 
 
-Finally, open index.html in your browser to run the app!
+## Using The App
+
+Open index.html in your browser to run the app
+
+Type into the filter field to see filtered list items and map markers
+
+Click on a list item or map marker to open an info window with a photo of the location
