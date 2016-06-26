@@ -61,81 +61,81 @@ var Place = function(data) {
 		var flickrURL = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=2e4da4d7b00160fa26b6c7b5419a9dd1&format=json&lat=' + self.lat + '&lon=' + self.lon + '&radius=.1&radius_units=mi';
 
 		jQuery.ajax({
-        	url: flickrURL,
-        	dataType: 'jsonp',
-        	jsonp: 'jsoncallback'
-        }).done(function(response){
+			url: flickrURL,
+			dataType: 'jsonp',
+			jsonp: 'jsoncallback'
+		}).done(function(response){
 
-        	if (response){
+			if (response){
 
-        		// define image
-        		var photo = response.photos.photo[0];
+				// define image
+				var photo = response.photos.photo[0];
 
-        		// check if image comes back undefined
-        		if (typeof photo !== 'undefined'){
+				// check if image comes back undefined
+				if (typeof photo !== 'undefined'){
 
-	        		// get image details
-	        		var photoFarm = photo.farm;
-	        		var photoServer = photo.server;
-	        		var photoSecret = photo.secret;
-	        		var photoOwner = photo.owner;
-	        		var photoID = photo.id;
-	        		var photoTitle = photo.title;
-	        		var photoLink = 'https://www.flickr.com/photos/' + photoOwner + '/' + photoID;
+					// get image details
+					var photoFarm = photo.farm;
+					var photoServer = photo.server;
+					var photoSecret = photo.secret;
+					var photoOwner = photo.owner;
+					var photoID = photo.id;
+					var photoTitle = photo.title;
+					var photoLink = 'https://www.flickr.com/photos/' + photoOwner + '/' + photoID;
 
-	        		// set desired thumbnail Size
-	        		var photoSize = 'q';
+					// set desired thumbnail Size
+					var photoSize = 'q';
 
-	        		// set photo html
-	        		self.photo = '<img src="https://farm'+ photoFarm +'.staticflickr.com/'+ photoServer +'/'+ photoID +'_'+ photoSecret +'_' + photoSize + '.jpg" alt="' + photoTitle + '"> <br><small>Photo courtesy of <a class="attribution-link" target="_blank" href="' + photoLink + '" title="Photo Attribution">Flickr</a>.</small>';
-	        	}
+					// set photo html
+					self.photo = '<img src="https://farm'+ photoFarm +'.staticflickr.com/'+ photoServer +'/'+ photoID +'_'+ photoSecret +'_' + photoSize + '.jpg" alt="' + photoTitle + '"> <br><small>Photo courtesy of <a class="attribution-link" target="_blank" href="' + photoLink + '" title="Photo Attribution">Flickr</a>.</small>';
+				}
 
-	        	else{
+				else{
 
-	        		// if no photo is available for this place, display text
-	        		self.photo = 'No Images Here! Check back later.';
+					// if no photo is available for this place, display text
+					self.photo = 'No Images Here! Check back later.';
 
-	        	}
-        	}
+				}
+			}
 
-        }).fail(function() {
+		}).fail(function() {
 
-        	// if API is broken, log error and display text
-        	console.log("error in ajax call to flickr api");
-        	self.photo = 'There\'s a problem with Flickr right now.';
+			// if API is broken, log error and display text
+			console.log("error in ajax call to flickr api");
+			self.photo = 'There\'s a problem with Flickr right now.';
 
-        }).always(function() {
-        	
-        	//set infowindow content
-        	infowindow.setContent('<p class="place-name">' + self.name + '</p>' + self.photo);
+		}).always(function() {
+			
+			//set infowindow content
+			infowindow.setContent('<p class="place-name">' + self.name + '</p>' + self.photo);
 
-        	// open the info window
+			// open the info window
 			infowindow.open(map);
 
 			// set the infowindow's position
 			infowindow.setPosition( self.loc );
-        
-        });
+		
+		});
 
 	};
 
 	// create marker and immediately invoke function
 	this.createMarker = (function(){
 
-    	self.newMarker = new google.maps.Marker({
+		self.newMarker = new google.maps.Marker({
 			map: map,
 			animation: google.maps.Animation.DROP,
 			position: self.loc
- 		});
+		});
 
-    	// add click event listener to the marker
- 		self.newMarker.addListener('click', function(){
- 			self.clickedPlace();
- 		});
+		// add click event listener to the marker
+		self.newMarker.addListener('click', function(){
+			self.clickedPlace();
+		});
 
- 		// push location to bounds array
- 		self.latLng = new google.maps.LatLng(parseFloat(self.lat), parseFloat(self.lon));
- 		map.bounds.extend(self.latLng);
+		// push location to bounds array
+		self.latLng = new google.maps.LatLng(parseFloat(self.lat), parseFloat(self.lon));
+		map.bounds.extend(self.latLng);
 
 	})();
 
@@ -160,13 +160,13 @@ var Place = function(data) {
 		// reset active class if active
 		placeList().forEach(function(place){
 
-    		if (place.activeClass() === true){
-    			place.activeClass(false);
-    		}
+			if (place.activeClass() === true){
+				place.activeClass(false);
+			}
 
-    	});
+		});
 
-    	// set this active class
+		// set this active class
 		self.activeClass(true);
 
 	};
@@ -177,11 +177,11 @@ var Place = function(data) {
 		// check all other markers and set their animation to none
 		placeList().forEach(function(place){
 
-    		if (place.newMarker.animation != 'null'){
-    			place.newMarker.setAnimation('null');
-    		}
+			if (place.newMarker.animation != 'null'){
+				place.newMarker.setAnimation('null');
+			}
 
-    	});
+		});
 
 		// animate current marker
 		self.newMarker.setAnimation(google.maps.Animation.BOUNCE);
@@ -201,7 +201,7 @@ function viewModel() {
 	var self = this;
 
 	 // fit map to new bounds
-    map.fitBounds(map.bounds);
+	map.fitBounds(map.bounds);
 
 	// create observable array for list of places
 	placeList = ko.observableArray([]);
@@ -210,49 +210,49 @@ function viewModel() {
 	activePlace = ko.observable('');
 
 	// Push markers to observable array
-    places.forEach(function(info){
+	places.forEach(function(info){
 
-    	placeList.push( new Place(info) );
+		placeList.push( new Place(info) );
 
-    });
+	});
 
-    // get searchterm from text input
-    this.searchTerm = ko.observable('');
+	// get searchterm from text input
+	this.searchTerm = ko.observable('');
 
-    // filter places on map based on searchterm
-    this.filterResults = ko.computed(function(){
+	// filter places on map based on searchterm
+	this.filterResults = ko.computed(function(){
 
-        // return a list of locations filtered by the searchTerm
-        return placeList().filter(function (location) {
+		// return a list of locations filtered by the searchTerm
+		return placeList().filter(function (location) {
 
-            var display = true;
+			var display = true;
 
-            if (self.searchTerm() !== ''){
+			if (self.searchTerm() !== ''){
 
-                // check if the place name contains the search term
-                var termIndex = location.name.toLowerCase().indexOf(self.searchTerm().toLowerCase());
+				// check if the place name contains the search term
+				var termIndex = location.name.toLowerCase().indexOf(self.searchTerm().toLowerCase());
 
-                if ( termIndex !== -1){
-                    display = true;
-                }
+				if ( termIndex !== -1){
+					display = true;
+				}
 
-                else {
-                    display = false;
-                }
+				else {
+					display = false;
+				}
 
-            }
+			}
 
-            // toggle map marker based on the filter
-            location.newMarker.setVisible(display);
+			// toggle map marker based on the filter
+			location.newMarker.setVisible(display);
 
-            // close infowindow
-            infowindow.close();
+			// close infowindow
+			infowindow.close();
 
-            return display;
+			return display;
 
-        });
+		});
 
-    });
+	});
 
 }
 
@@ -279,34 +279,34 @@ function initMap() {
 	var initialCenter = {lat: 41.771397, lng: -72.6856313};
 	
 	// initialize Google Map
-    map = new google.maps.Map(document.getElementById('map'), {
+	map = new google.maps.Map(document.getElementById('map'), {
 		center: initialCenter,
 		zoom: 14
-    });
+	});
 
-    // initialize bounds variable
-    map.bounds = new google.maps.LatLngBounds();
+	// initialize bounds variable
+	map.bounds = new google.maps.LatLngBounds();
 
-    // create infoWindow
-   	infowindow = new google.maps.InfoWindow({
+	// create infoWindow
+	infowindow = new google.maps.InfoWindow({
 		content: '',
 		infoposition: {},
 		pixelOffset: {width: -2, height: -30}
 	});
 
- 	// center map when window resizes to help with responsive layout
-    google.maps.event.addDomListener(window, 'resize', function(){
-    	
-    	// set center of map
-    	map.setCenter(initialCenter);
-    	
-    	 // fit map to new bounds
-    	map.fitBounds(map.bounds);
-   
-    });
+	// center map when window resizes to help with responsive layout
+	google.maps.event.addDomListener(window, 'resize', function(){
+		
+		// set center of map
+		map.setCenter(initialCenter);
+		
+		 // fit map to new bounds
+		map.fitBounds(map.bounds);
 
-    // call function to initialize app
-    initApp();
+	});
+
+	// call function to initialize app
+	initApp();
 
 }
 
