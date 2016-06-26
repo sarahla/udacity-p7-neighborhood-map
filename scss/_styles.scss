@@ -26,7 +26,7 @@ body,
 	transition: transform 100ms ease-in-out;
 }
 
-.loading-graphic{
+.loading-graphic {
 	display: block;
 	background-color: $light-gray;
 	width: rem-calc(150);
@@ -70,11 +70,13 @@ body,
 	}
 }
 
-.attribution-link{
+.attribution-link {
 	color: $indigo;
+	
 	&:hover{
 		color: $plum;
 	}
+
 }
 
 .title-bar {
@@ -106,7 +108,7 @@ body,
 	color: darken($indigo, 20%);
 }
 
-.map-error{
+.map-error {
 	text-align: center;
 	padding: rem-calc(20);
 }
