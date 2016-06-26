@@ -13,6 +13,7 @@ To build this project, download it with Git:
 git clone https://github.com/sarahla/udacity-p7-neighborhood-map.git
 ```
 If you don't have node installed on your computer, [get it here](http://nodejs.org) and install it
+
 If you don't have gulp installed, run the following command in your command line
 
 ```bash
