@@ -188,7 +188,7 @@ var Place = function(data) {
 
 		// animate current marker
 		self.newMarker.setAnimation(google.maps.Animation.BOUNCE);
-		setTimeout(function(){ self.newMarker.setAnimation(null); }, 1500);
+		setTimeout(function(){ self.newMarker.setAnimation(null); }, 1400);
 
 	};
 
