@@ -1,4 +1,12 @@
 /**
+* Define Global Variables
+**/
+var placeList,
+	activePlace,
+	map,
+	infowindow;
+	
+/**
 * Data
 **/
 
@@ -35,15 +43,6 @@ var places = [
 	}
 
 ];
-
-/**
-* Define Global Variables
-**/
-var placeList,
-	activePlace,
-	map,
-	infowindow;
-
 
 /**
 * Define Place Class
@@ -230,7 +229,7 @@ function viewModel() {
 
 			var display = true;
 
-			if (self.searchTerm() !== ''){
+			if (self.searchTerm()){
 
 				// check if the place name contains the search term
 				var termIndex = location.name.toLowerCase().indexOf(self.searchTerm().toLowerCase());
